@@ -16,6 +16,7 @@ type Client struct {
 	username     string
 	subreddit    string
 	limit        int
+	frequency    int
 	session      *geddit.LoginSession
 }
 
@@ -35,14 +36,16 @@ func (c *Client) setConfig() {
 // stuff from reddit
 func Initialize() *Client {
 	limit, _ := strconv.Atoi(os.Getenv("LIMIT"))
+	freq, _ := strconv.Atoi(os.Getenv("FREQUENCY"))
 	client := &Client{
 		clientID:     os.Getenv("CLIENTID"),
-		clientSecret: os.Getenv("CLIENTID"),
+		clientSecret: os.Getenv("CLIENTSECRET"),
 		password:     os.Getenv("PASSWORD"),
 		userAgent:    os.Getenv("USERAGENT"),
 		username:     os.Getenv("USERNAME"),
 		subreddit:    os.Getenv("SUBREDDIT"),
 		limit:        limit,
+		frequency:    freq,
 	}
 	client.setConfig()
 	return client
