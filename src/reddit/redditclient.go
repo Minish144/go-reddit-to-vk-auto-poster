@@ -4,6 +4,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/joho/godotenv"
 	"github.com/jzelinskie/geddit"
 )
 
@@ -35,6 +36,7 @@ func (c *Client) setConfig() {
 // to get posts and other
 // stuff from reddit
 func Initialize() *Client {
+	godotenv.Load()
 	limit, _ := strconv.Atoi(os.Getenv("LIMIT"))
 	freq, _ := strconv.Atoi(os.Getenv("FREQUENCY"))
 	client := &Client{
