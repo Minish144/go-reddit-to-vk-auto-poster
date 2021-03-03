@@ -1,12 +1,14 @@
-package redditservice
+package reddit
 
 import (
 	"os"
 	"strconv"
+
+	"github.com/jzelinskie/geddit"
 )
 
-// RedditClient structure
-type RedditClient struct {
+// Client structure
+type Client struct {
 	clientID     string
 	clientSecret string
 	password     string
@@ -16,22 +18,29 @@ type RedditClient struct {
 	limit        int
 }
 
-func getRedditClient() *RedditClient {
-	clientID := os.Getenv("CLIENTID")
-	clientSecret := os.Getenv("CLIENTID")
-	password := os.Getenv("PASSWORD")
-	userAgent := os.Getenv("USERAGENT")
-	username := os.Getenv("USERNAME")
-	subreddit := os.Getenv("SUBREDDIT")
-	limit, _ := strconv.Atoi(os.Getenv("LIMIT"))
+// Setting new session from client
+func (c *Client) setCfg() *geddit.LoginSession {
+	session, _ := geddit.NewLoginSession(
+		c.username,
+		c.password,
+		c.userAgent,
+	)
+	return session
+}
 
-	return &RedditClient{
-		clientID:     clientID,
-		clientSecret: clientSecret,
-		password:     password,
-		userAgent:    userAgent,
-		username:     username,
-		subreddit:    subreddit,
+// Getting session variable which
+// gives you an access to reddit
+func getSession() (*geddit.LoginSession, *Client) {
+	limit, _ := strconv.Atoi(os.Getenv("LIMIT"))
+	client := &Client{
+		clientID:     os.Getenv("CLIENTID"),
+		clientSecret: os.Getenv("CLIENTID"),
+		password:     os.Getenv("PASSWORD"),
+		userAgent:    os.Getenv("USERAGENT"),
+		username:     os.Getenv("USERNAME"),
+		subreddit:    os.Getenv("SUBREDDIT"),
 		limit:        limit,
 	}
+
+	return client.setCfg(), client
 }

@@ -1,1 +1,1 @@
-package vkservice
+package vk
