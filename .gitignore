@@ -18,3 +18,9 @@
 ### Go Patch ###
 /vendor/
 /Godeps/
+
+### Environment ###
+.env
+
+### MacOS ###
+.DS_Store
