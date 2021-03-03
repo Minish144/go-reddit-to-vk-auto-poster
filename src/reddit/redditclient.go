@@ -10,25 +10,25 @@ import (
 
 // Client 's structure
 type Client struct {
-	clientID     string
-	clientSecret string
-	password     string
-	userAgent    string
-	username     string
-	subreddit    string
-	limit        int
-	frequency    int
-	session      *geddit.LoginSession
+	ClientID     string
+	ClientSecret string
+	Password     string
+	UserAgent    string
+	Username     string
+	Subreddit    string
+	Limit        int
+	Frequency    int
+	Session      *geddit.LoginSession
 }
 
 // Setting new session for client
 func (c *Client) setConfig() {
 	session, _ := geddit.NewLoginSession(
-		c.username,
-		c.password,
-		c.userAgent,
+		c.Username,
+		c.Password,
+		c.UserAgent,
 	)
-	c.session = session
+	c.Session = session
 }
 
 // Initialize gives you
@@ -40,20 +40,22 @@ func Initialize() *Client {
 	limit, _ := strconv.Atoi(os.Getenv("LIMIT"))
 	freq, _ := strconv.Atoi(os.Getenv("FREQUENCY"))
 	client := &Client{
-		clientID:     os.Getenv("CLIENTID"),
-		clientSecret: os.Getenv("CLIENTSECRET"),
-		password:     os.Getenv("PASSWORD"),
-		userAgent:    os.Getenv("USERAGENT"),
-		username:     os.Getenv("USERNAME"),
-		subreddit:    os.Getenv("SUBREDDIT"),
-		limit:        limit,
-		frequency:    freq,
+		ClientID:     os.Getenv("CLIENTID"),
+		ClientSecret: os.Getenv("CLIENTSECRET"),
+		Password:     os.Getenv("PASSWORD"),
+		UserAgent:    os.Getenv("USERAGENT"),
+		Username:     os.Getenv("USERNAME"),
+		Subreddit:    os.Getenv("SUBREDDIT"),
+		Limit:        limit,
+		Frequency:    freq,
 	}
 	client.setConfig()
 	return client
 }
 
-// GetPosts returns
-func (c *Client) GetPosts() ([]*geddit.Submission, error) {
-	return c.session.SubredditSubmissions(c.subreddit, "hot", geddit.ListingOptions{Limit: c.limit})
+// GetPosts returns array of Posts
+func (c *Client) GetPosts() ([]*Post, error) {
+	submissions, err := c.Session.SubredditSubmissions(c.Subreddit, "hot", geddit.ListingOptions{Limit: c.Limit})
+	posts := SubmissionsToPosts(submissions)
+	return posts, err
 }
