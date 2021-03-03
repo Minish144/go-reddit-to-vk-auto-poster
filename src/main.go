@@ -7,5 +7,9 @@ import (
 
 func main() {
 	structure := reddit.Initialize()
-	fmt.Print(structure)
+	posts, _ := structure.GetPosts()
+	for _, post := range posts {
+		fmt.Print(post.URL)
+		fmt.Print("\n--------\n")
+	}
 }

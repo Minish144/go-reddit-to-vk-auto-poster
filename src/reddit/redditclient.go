@@ -8,7 +8,7 @@ import (
 	"github.com/jzelinskie/geddit"
 )
 
-// Client structure
+// Client 's structure
 type Client struct {
 	clientID     string
 	clientSecret string
