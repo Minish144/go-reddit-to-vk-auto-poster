@@ -16,21 +16,22 @@ type Client struct {
 	username     string
 	subreddit    string
 	limit        int
+	session      *geddit.LoginSession
 }
 
-// Setting new session from client
-func (c *Client) setCfg() *geddit.LoginSession {
+// Setting new session for client
+func (c *Client) setConfig() {
 	session, _ := geddit.NewLoginSession(
 		c.username,
 		c.password,
 		c.userAgent,
 	)
-	return session
+	c.session = session
 }
 
 // Getting session variable which
 // gives you an access to reddit
-func getSession() (*geddit.LoginSession, *Client) {
+func initialize() *Client {
 	limit, _ := strconv.Atoi(os.Getenv("LIMIT"))
 	client := &Client{
 		clientID:     os.Getenv("CLIENTID"),
@@ -41,6 +42,6 @@ func getSession() (*geddit.LoginSession, *Client) {
 		subreddit:    os.Getenv("SUBREDDIT"),
 		limit:        limit,
 	}
-
-	return client.setCfg(), client
+	client.setConfig()
+	return client
 }
