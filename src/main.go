@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reddit-to-vk-auto-poster/src/reddit"
+)
 
 func main() {
-	fmt.Print("hello world")
+	structure := reddit.Initialize()
+	fmt.Print(structure)
 }

@@ -29,9 +29,11 @@ func (c *Client) setConfig() {
 	c.session = session
 }
 
-// Getting session variable which
-// gives you an access to reddit
-func initialize() *Client {
+// Initialize gives you
+// client that allows you
+// to get posts and other
+// stuff from reddit
+func Initialize() *Client {
 	limit, _ := strconv.Atoi(os.Getenv("LIMIT"))
 	client := &Client{
 		clientID:     os.Getenv("CLIENTID"),
@@ -44,4 +46,10 @@ func initialize() *Client {
 	}
 	client.setConfig()
 	return client
+}
+
+// GetPosts returns
+func (c *Client) GetPosts() ([]*geddit.Submission, error) {
+	posts, err := c.session.SubredditSubmissions(c.subreddit, "hot", geddit.ListingOptions{Limit: c.limit})
+	return posts, err
 }
