@@ -31,10 +31,8 @@ func (c *Client) setConfig() {
 	c.Session = session
 }
 
-// Initialize gives you
-// client that allows you
-// to get posts and other
-// stuff from reddit
+// Initialize gives you client that allows you
+// to get posts and other stuff from reddit
 func Initialize() *Client {
 	godotenv.Load()
 	limit, _ := strconv.Atoi(os.Getenv("LIMIT"))
