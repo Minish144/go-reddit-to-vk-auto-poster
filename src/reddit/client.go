@@ -53,7 +53,10 @@ func Initialize() *Client {
 
 // GetPosts returns array of Posts
 func (c *Client) GetPosts() ([]*Post, error) {
-	submissions, err := c.Session.SubredditSubmissions(c.Subreddit, "hot", geddit.ListingOptions{Limit: c.Limit})
+	submissions, err := c.Session.SubredditSubmissions(
+		c.Subreddit, "hot",
+		geddit.ListingOptions{Limit: c.Limit},
+	)
 	posts := SubmissionsToPosts(submissions)
 	return posts, err
 }
