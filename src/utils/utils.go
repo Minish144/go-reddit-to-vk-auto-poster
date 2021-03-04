@@ -1,12 +1,9 @@
 package utils
 
 import (
-	"encoding/json"
 	"io"
 	"net/http"
 	"os"
-
-	"github.com/go-resty/resty/v2"
 )
 
 // DownloadFile is a function for downloading file by its url
