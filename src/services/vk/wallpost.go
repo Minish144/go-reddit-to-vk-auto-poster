@@ -1,6 +1,12 @@
 package vk
 
-import "reddit-to-vk-auto-poster/src/services/reddit"
+import (
+	"fmt"
+	"reddit-to-vk-auto-poster/src/services/reddit"
+	"strconv"
+
+	"github.com/go-vk-api/vk"
+)
 
 // WallPost structure for simple group post
 type WallPost struct {
@@ -25,4 +31,46 @@ func RedditSubmissionToVkPost(
 		PublishDate: publishDate,
 	}
 	return &wallpost
+}
+
+// Photo structure
+type Photo struct {
+	ID      int `json:"id"`
+	OwnerID int `json:"owner_id"`
+}
+
+// GetWallUploadServer returns address of server for photos uploading
+func (c *Client) GetWallUploadServer() *WallUploadServer {
+	var wallUploadServer WallUploadServer
+	params := vk.RequestParams{
+		"group_id": c.GroupID,
+	}
+	c.Client.CallMethod(
+		"photos.getWallUploadServer",
+		params,
+		&wallUploadServer,
+	)
+	return &wallUploadServer
+}
+
+// SaveWallPhoto saves phhoto to VK
+func (c *Client) SaveWallPhoto(uploaded *PhotoUploadResult) string {
+	var r []Photo
+
+	params := vk.RequestParams{
+		"group_id": c.GroupID,
+		"photo":    uploaded.Photo,
+		"server":   uploaded.Server,
+		"hash":     uploaded.Hash,
+	}
+
+	fmt.Print(uploaded.Server, "\n\n", uploaded.Photo, "\n\n", uploaded.Hash, "\n\n")
+
+	err := c.Client.CallMethod("photos.saveWallPhoto", params, &r)
+	if err != nil {
+		fmt.Print(err.Error(), "\n")
+	}
+	id := r[0].ID
+	photo := "photo" + c.GroupID + "_" + strconv.Itoa(id)
+	return photo
 }

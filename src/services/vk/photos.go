@@ -7,8 +7,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
-
-	"github.com/go-vk-api/vk"
 )
 
 // WallUploadServer structer which you get from GetWallUploadServer method
@@ -23,20 +21,6 @@ type PhotoUploadResult struct {
 	Server int    `json:"server"`
 	Photo  string `json:"photo"`
 	Hash   string `json:"hash"`
-}
-
-// GetWallUploadServer returns address of server for photos uploading
-func (c *Client) GetWallUploadServer() *WallUploadServer {
-	var wallUploadServer WallUploadServer
-	params := vk.RequestParams{
-		"group_id": c.GroupID,
-	}
-	c.Client.CallMethod(
-		"photos.getWallUploadServer",
-		params,
-		&wallUploadServer,
-	)
-	return &wallUploadServer
 }
 
 //UploadPhoto uploads your photo to the provided VK file storage
