@@ -6,6 +6,7 @@ import (
 	"github.com/go-vk-api/vk"
 )
 
+// Client structure
 type Client struct {
 	Token   string
 	OwnerID string
