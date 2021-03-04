@@ -1,8 +1,10 @@
 package vk
 
 import (
+	"fmt"
 	"reddit-to-vk-auto-poster/src/services/reddit"
 	"strconv"
+	"time"
 
 	"github.com/go-vk-api/vk"
 )
@@ -36,11 +38,13 @@ func RedditSubmissionToVkPost(
 // Post posts a new post on the wall of your public
 func (c *Client) Post(post *WallPost) error {
 	params := vk.RequestParams{
-		"owner_id":    post.OwnerID,
-		"from_group":  post.FromGroup,
-		"message":     post.Message,
-		"attachments": post.Attachment,
+		"owner_id":     post.OwnerID,
+		"from_group":   post.FromGroup,
+		"message":      post.Message,
+		"attachments":  post.Attachment,
+		"publish_date": post.PublishDate,
 	}
+
 	err := c.Client.CallMethod("wall.post", params, nil)
 	if err != nil {
 		return err
@@ -87,6 +91,35 @@ func (c *Client) SaveWallPhoto(uploaded *PhotoUploadResult) (string, error) {
 		return "", err
 	}
 	id := r[0].ID
-	photo := "photo" + c.GroupID + "_" + strconv.Itoa(id)
+	ownerID := r[0].OwnerID
+	photo := "photo" + strconv.Itoa(ownerID) + "_" + strconv.Itoa(id)
 	return photo, nil
+}
+
+// PostRedditSubmission posts provided Post to VK
+func (c *Client) PostRedditSubmission(post *reddit.Post) error {
+	server, err := c.GetWallUploadServer()
+	if err != nil {
+		return err
+	}
+
+	photoUploadResult, err := c.UploadPhoto(server.UploadURL, post.ImagePath)
+	if err != nil {
+		return err
+	}
+
+	attachment, err := c.SaveWallPhoto(photoUploadResult)
+	if err != nil {
+		return err
+	}
+	fmt.Print("Att: ", attachment)
+
+	vkPost := RedditSubmissionToVkPost(post, c, 1, attachment, time.Now().Unix()+100)
+	c.Post(vkPost)
+	return nil
+}
+
+// PostRedditSubmissions posts provided Posts to VK
+func (c *Client) PostRedditSubmissions(withPhotos bool) {
+
 }

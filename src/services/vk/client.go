@@ -35,13 +35,3 @@ func Initialize() (*Client, error) {
 
 	return &client, err
 }
-
-// PostRedditSubmission posts provided Post to VK
-func (c *Client) PostRedditSubmission() {
-
-}
-
-// PostRedditSubmissions posts provided Posts to VK
-func (c *Client) PostRedditSubmissions(withPhotos bool) {
-
-}
