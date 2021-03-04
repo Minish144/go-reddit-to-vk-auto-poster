@@ -22,15 +22,30 @@ func RedditSubmissionToVkPost(
 	post *reddit.Post,
 	client *Client,
 	fromGroup int,
+	attachment string,
 	publishDate int64) *WallPost {
 	wallpost := WallPost{
 		OwnerID:     client.OwnerID,
 		FromGroup:   fromGroup,
 		Message:     post.Title,
-		Attachment:  post.ImagePath,
+		Attachment:  attachment,
 		PublishDate: publishDate,
 	}
 	return &wallpost
+}
+
+// Post posts a new post on the wall of your public
+func (c *Client) Post(post *WallPost) error {
+	params := vk.RequestParams{
+		"owner_id":    post.OwnerID,
+		"from_group":  post.FromGroup,
+		"message":     post.Message,
+		"attachments": post.Attachment,
+	}
+	err := c.Client.CallMethod("wall.post", params, nil)
+	if err != nil {
+		return err
+	}
 }
 
 // Photo structure
