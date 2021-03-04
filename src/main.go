@@ -7,8 +7,10 @@ import (
 
 func main() {
 	vkclient, _ := vk.Initialize()
-	srv := vkclient.GetWallUploadServer()
-	res, _ := vkclient.UploadPhoto(srv.UploadURL, "temp/1614864280180195000.jpg")
-	result := vkclient.SaveWallPhoto(res)
-	fmt.Print(result)
+
+	server := vkclient.GetWallUploadServer()
+	photoUploadResult, _ := vkclient.UploadPhoto(server.UploadURL, "temp/1614864280180195000.jpg")
+	attachment := vkclient.SaveWallPhoto(photoUploadResult)
+
+	fmt.Print(attachment)
 }

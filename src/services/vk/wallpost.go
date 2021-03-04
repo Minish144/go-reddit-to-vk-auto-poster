@@ -46,6 +46,7 @@ func (c *Client) Post(post *WallPost) error {
 	if err != nil {
 		return err
 	}
+	return nil
 }
 
 // Photo structure
