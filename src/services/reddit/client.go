@@ -33,6 +33,8 @@ func downloadImagesForPosts(posts []*Post, dir string) {
 			utils.DownloadFile(elem.ImagePath, elem.ImageURL)
 		}
 	}
+
+	DeletePostsPhotos(posts)
 }
 
 // Setting new session for client

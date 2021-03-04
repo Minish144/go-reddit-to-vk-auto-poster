@@ -1,6 +1,7 @@
 package reddit
 
 import (
+	"os"
 	"strings"
 
 	"github.com/jzelinskie/geddit"
@@ -38,4 +39,15 @@ func SubmissionsToPosts(submissions []*geddit.Submission) []*Post {
 		postsArray = append(postsArray, SubmissiontToPost(subm))
 	}
 	return postsArray
+}
+
+//DeletePostsPhotos removes photo from directory of reddit.Post
+func DeletePostsPhotos(posts []*Post) {
+	for _, elem := range posts {
+		if elem.HasImage {
+			os.Remove(elem.ImagePath)
+			elem.HasImage = false
+			elem.ImagePath = ""
+		}
+	}
 }
