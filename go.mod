@@ -4,7 +4,6 @@ go 1.15
 
 require (
 	github.com/beefsack/go-rate v0.0.0-20200827232406-6cde80facd47 // indirect
-	github.com/go-resty/resty/v2 v2.5.0
 	github.com/go-vk-api/vk v0.0.0-20200129183856-014d9b8adc96
 	github.com/golang/protobuf v1.4.3 // indirect
 	github.com/google/go-cmp v0.5.4 // indirect

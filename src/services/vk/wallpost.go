@@ -1,7 +1,6 @@
 package vk
 
 import (
-	"fmt"
 	"reddit-to-vk-auto-poster/src/services/reddit"
 	"strconv"
 	"time"
@@ -112,7 +111,6 @@ func (c *Client) PostRedditSubmission(post *reddit.Post) error {
 	if err != nil {
 		return err
 	}
-	fmt.Print("Att: ", attachment)
 
 	vkPost := RedditSubmissionToVkPost(post, c, 1, attachment, time.Now().Unix()+100)
 	c.Post(vkPost)
