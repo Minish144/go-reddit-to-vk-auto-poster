@@ -13,7 +13,7 @@ type WallUploadServer struct {
 func (c *Client) GetWallUploadServer() *WallUploadServer {
 	var wallUploadServer WallUploadServer
 	params := vk.RequestParams{
-		"group_id": ,
+		"group_id": c.GroupID,
 	}
 	c.Client.CallMethod(
 		"photos.getWallUploadServer",
