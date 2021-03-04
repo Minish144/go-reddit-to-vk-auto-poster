@@ -2,8 +2,7 @@ package reddit
 
 import "github.com/jzelinskie/geddit"
 
-// Post structure for
-// reddit submission
+// Post structure for reddit submission
 type Post struct {
 	Title     string
 	ImageURL  string
@@ -28,8 +27,7 @@ func SubmissiontToPost(submission *geddit.Submission) *Post {
 	}
 }
 
-// SubmissionsToPosts converts array of geddit.Submissions
-// to array of Posts
+// SubmissionsToPosts converts array of geddit.Submissions to array of Posts
 func SubmissionsToPosts(submissions []*geddit.Submission) []*Post {
 	postsArray := []*Post{}
 	for _, subm := range submissions {
