@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"reddit-to-vk-auto-poster/src/services/vk"
 )
 
@@ -12,7 +11,7 @@ func main() {
 	// 	fmt.Print(post)
 	// 	fmt.Print("\n--------\n")
 	// }
-	vkClient, _ := vk.Initialize()
-	srv := vkClient.GetWallUploadServer()
-	fmt.Print(srv)
+	vkclient, _ := vk.Initialize()
+	srv := vkclient.GetWallUploadServer()
+	res, err := vkclient.UploadPhoto(srv.UploadURL, "temp/1614864280180195000.jpg")
 }

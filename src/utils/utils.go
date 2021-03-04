@@ -26,20 +26,3 @@ func DownloadFile(filepath string, url string) error {
 	_, err = io.Copy(out, resp.Body)
 	return err
 }
-
-// Upload file
-func Upload(uploadURL, field, filename string, reader io.Reader, holder interface{}) (interface{}, error) {
-	client := resty.New()
-	resp, err := client.R().
-		SetFileReader(field, filename, reader).
-		Post(uploadURL)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(resp.Body(), holder)
-	if err != nil {
-		return nil, err
-	}
-	return holder, nil
-}
