@@ -1,9 +1,13 @@
 package reddit
 
-import "github.com/jzelinskie/geddit"
+import (
+	"os"
+	"strings"
 
-// Post structure for
-// reddit submission
+	"github.com/jzelinskie/geddit"
+)
+
+// Post structure for reddit submission
 type Post struct {
 	Title     string
 	ImageURL  string
@@ -15,7 +19,7 @@ type Post struct {
 func SubmissiontToPost(submission *geddit.Submission) *Post {
 	imageURL := ""
 	hasImage := false
-	if submission.URL != "" {
+	if strings.Contains(submission.URL, ".jpg") {
 		imageURL = submission.URL
 		hasImage = true
 	} else {
@@ -28,12 +32,28 @@ func SubmissiontToPost(submission *geddit.Submission) *Post {
 	}
 }
 
-// SubmissionsToPosts converts array of geddit.Submissions
-// to array of Posts
+// SubmissionsToPosts converts array of geddit.Submissions to array of Posts
 func SubmissionsToPosts(submissions []*geddit.Submission) []*Post {
 	postsArray := []*Post{}
 	for _, subm := range submissions {
 		postsArray = append(postsArray, SubmissiontToPost(subm))
 	}
 	return postsArray
+}
+
+//DeletePostsPhotos removes photo from directory of reddit.Post
+func DeletePostsPhotos(posts []*Post) {
+	for _, elem := range posts {
+		if elem.HasImage {
+			os.Remove(elem.ImagePath)
+			elem.HasImage = false
+			elem.ImagePath = ""
+		}
+	}
+}
+
+//DeletePostPhoto removes photo from directory of reddit.Post
+func DeletePostPhoto(post *Post) {
+	posts := []*Post{post}
+	DeletePostsPhotos(posts)
 }
