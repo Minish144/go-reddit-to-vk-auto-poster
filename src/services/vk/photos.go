@@ -25,11 +25,6 @@ type PhotoUploadResult struct {
 	Hash   string `json:"hash"`
 }
 
-// PhotoPost .
-type PhotoPost struct {
-	photo *os.File
-}
-
 // GetWallUploadServer returns address of server for photos uploading
 func (c *Client) GetWallUploadServer() *WallUploadServer {
 	var wallUploadServer WallUploadServer
@@ -45,22 +40,22 @@ func (c *Client) GetWallUploadServer() *WallUploadServer {
 }
 
 //UploadPhoto uploads your photo to the provided VK file storage
-func (c *Client) UploadPhoto(url, filePath string) (PhotoUploadResult, error) {
+func (c *Client) UploadPhoto(url, filePath string) (*PhotoUploadResult, error) {
 	img, _ := os.Open(filePath)
 	var b bytes.Buffer
 	w := multipart.NewWriter(&b)
 	fw, err := w.CreateFormFile("photo", filePath)
 	if err != nil {
-		return PhotoUploadResult{}, err
+		return &PhotoUploadResult{}, err
 	}
 	if _, err = io.Copy(fw, img); err != nil {
-		return PhotoUploadResult{}, err
+		return &PhotoUploadResult{}, err
 	}
 	w.Close()
 
 	req, err := http.NewRequest("POST", url, &b)
 	if err != nil {
-		return PhotoUploadResult{}, err
+		return &PhotoUploadResult{}, err
 	}
 	req.Header.Set("Content-Type", w.FormDataContentType())
 
@@ -68,7 +63,7 @@ func (c *Client) UploadPhoto(url, filePath string) (PhotoUploadResult, error) {
 	client := &http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
-		return PhotoUploadResult{}, err
+		return &PhotoUploadResult{}, err
 	}
 
 	// resp
@@ -76,11 +71,11 @@ func (c *Client) UploadPhoto(url, filePath string) (PhotoUploadResult, error) {
 	dec := json.NewDecoder(res.Body)
 	err = dec.Decode(&uplRes)
 	if err != nil {
-		return PhotoUploadResult{}, err
+		return &PhotoUploadResult{}, err
 	}
 	defer res.Body.Close()
 
-	return PhotoUploadResult{
+	return &PhotoUploadResult{
 		Server: uplRes.Server,
 		Photo:  uplRes.Photo,
 		Hash:   uplRes.Hash,
