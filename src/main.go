@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"reddit-to-vk-auto-poster/src/reddit"
+	"reddit-to-vk-auto-poster/src/services/reddit"
 )
 
 func main() {
