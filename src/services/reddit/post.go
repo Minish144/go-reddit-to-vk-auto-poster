@@ -51,3 +51,9 @@ func DeletePostsPhotos(posts []*Post) {
 		}
 	}
 }
+
+//DeletePostPhoto removes photo from directory of reddit.Post
+func DeletePostPhoto(post *Post) {
+	posts := []*Post{post}
+	DeletePostsPhotos(posts)
+}

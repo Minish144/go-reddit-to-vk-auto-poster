@@ -114,6 +114,9 @@ func (c *Client) PostRedditSubmission(post *reddit.Post) error {
 
 	vkPost := RedditSubmissionToVkPost(post, c, 1, attachment, time.Now().Unix()+100)
 	c.Post(vkPost)
+
+	reddit.DeletePostPhoto(post)
+
 	return nil
 }
 
