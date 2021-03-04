@@ -2,7 +2,9 @@ package reddit
 
 import (
 	"os"
+	"reddit-to-vk-auto-poster/src/utils"
 	"strconv"
+	"time"
 
 	"github.com/joho/godotenv"
 	"github.com/jzelinskie/geddit"
@@ -19,6 +21,18 @@ type Client struct {
 	Limit        int
 	Frequency    int
 	Session      *geddit.LoginSession
+}
+
+func downloadImagesForPosts(posts []*Post, dir string) {
+	var filepath string
+
+	for _, elem := range posts {
+		if elem.HasImage {
+			filepath = dir + "/" + strconv.FormatInt(time.Now().UnixNano(), 10) + ".jpg"
+			elem.ImagePath = filepath
+			utils.DownloadFile(elem.ImagePath, elem.ImageURL)
+		}
+	}
 }
 
 // Setting new session for client
@@ -58,5 +72,6 @@ func (c *Client) GetPosts() ([]*Post, error) {
 		geddit.ListingOptions{Limit: c.Limit},
 	)
 	posts := SubmissionsToPosts(submissions)
+	downloadImagesForPosts(posts, "temp")
 	return posts, err
 }

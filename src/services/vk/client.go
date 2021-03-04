@@ -26,6 +26,12 @@ func Initialize() (*Client, error) {
 	return &client, err
 }
 
-func (c *Client) postRedditSubmission() {
+// PostRedditSubmission posts provided Post to VK
+func (c *Client) PostRedditSubmission() {
+
+}
+
+// PostRedditSubmissions posts provided Posts to VK
+func (c *Client) PostRedditSubmissions(withPhotos bool) {
 
 }

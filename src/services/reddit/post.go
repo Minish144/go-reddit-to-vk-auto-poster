@@ -1,6 +1,10 @@
 package reddit
 
-import "github.com/jzelinskie/geddit"
+import (
+	"strings"
+
+	"github.com/jzelinskie/geddit"
+)
 
 // Post structure for reddit submission
 type Post struct {
@@ -14,7 +18,7 @@ type Post struct {
 func SubmissiontToPost(submission *geddit.Submission) *Post {
 	imageURL := ""
 	hasImage := false
-	if submission.URL != "" {
+	if strings.Contains(submission.URL, ".jpg") {
 		imageURL = submission.URL
 		hasImage = true
 	} else {
