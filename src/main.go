@@ -10,7 +10,7 @@ func main() {
 
 	server := vkclient.GetWallUploadServer()
 	photoUploadResult, _ := vkclient.UploadPhoto(server.UploadURL, "temp/1614864280180195000.jpg")
-	attachment := vkclient.SaveWallPhoto(photoUploadResult)
+	attachment, _ := vkclient.SaveWallPhoto(photoUploadResult)
 
 	fmt.Print(attachment)
 }

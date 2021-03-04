@@ -1,7 +1,6 @@
 package vk
 
 import (
-	"fmt"
 	"reddit-to-vk-auto-poster/src/services/reddit"
 	"strconv"
 
@@ -56,21 +55,24 @@ type Photo struct {
 }
 
 // GetWallUploadServer returns address of server for photos uploading
-func (c *Client) GetWallUploadServer() *WallUploadServer {
+func (c *Client) GetWallUploadServer() (*WallUploadServer, error) {
 	var wallUploadServer WallUploadServer
 	params := vk.RequestParams{
 		"group_id": c.GroupID,
 	}
-	c.Client.CallMethod(
+	err := c.Client.CallMethod(
 		"photos.getWallUploadServer",
 		params,
 		&wallUploadServer,
 	)
-	return &wallUploadServer
+	if err != nil {
+		return &WallUploadServer{}, err
+	}
+	return &wallUploadServer, nil
 }
 
 // SaveWallPhoto saves phhoto to VK
-func (c *Client) SaveWallPhoto(uploaded *PhotoUploadResult) string {
+func (c *Client) SaveWallPhoto(uploaded *PhotoUploadResult) (string, error) {
 	var r []Photo
 
 	params := vk.RequestParams{
@@ -80,13 +82,11 @@ func (c *Client) SaveWallPhoto(uploaded *PhotoUploadResult) string {
 		"hash":     uploaded.Hash,
 	}
 
-	fmt.Print(uploaded.Server, "\n\n", uploaded.Photo, "\n\n", uploaded.Hash, "\n\n")
-
 	err := c.Client.CallMethod("photos.saveWallPhoto", params, &r)
 	if err != nil {
-		fmt.Print(err.Error(), "\n")
+		return "", err
 	}
 	id := r[0].ID
 	photo := "photo" + c.GroupID + "_" + strconv.Itoa(id)
-	return photo
+	return photo, nil
 }
