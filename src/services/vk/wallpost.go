@@ -97,26 +97,27 @@ func (c *Client) SaveWallPhoto(uploaded *PhotoUploadResult) (string, error) {
 
 // PostRedditSubmission posts provided Post to VK
 func (c *Client) PostRedditSubmission(post *reddit.Post) error {
-	server, err := c.GetWallUploadServer()
-	if err != nil {
-		return err
+	if post.HasImage {
+		server, err := c.GetWallUploadServer()
+		if err != nil {
+			return err
+		}
+
+		photoUploadResult, err := c.UploadPhoto(server.UploadURL, post.ImagePath)
+		if err != nil {
+			return err
+		}
+
+		attachment, err := c.SaveWallPhoto(photoUploadResult)
+		if err != nil {
+			return err
+		}
+
+		vkPost := RedditSubmissionToVkPost(post, c, 1, attachment, time.Now().Unix()+100)
+		c.Post(vkPost)
+
+		reddit.DeletePostPhoto(post)
 	}
-
-	photoUploadResult, err := c.UploadPhoto(server.UploadURL, post.ImagePath)
-	if err != nil {
-		return err
-	}
-
-	attachment, err := c.SaveWallPhoto(photoUploadResult)
-	if err != nil {
-		return err
-	}
-
-	vkPost := RedditSubmissionToVkPost(post, c, 1, attachment, time.Now().Unix()+100)
-	c.Post(vkPost)
-
-	reddit.DeletePostPhoto(post)
-
 	return nil
 }
 
