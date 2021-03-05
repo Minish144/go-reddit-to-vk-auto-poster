@@ -1,10 +1,12 @@
 package vk
 
 import (
+	"os"
 	"reddit-to-vk-auto-poster/src/services/reddit"
 	"strconv"
 
 	"github.com/go-vk-api/vk"
+	"github.com/joho/godotenv"
 )
 
 // WallPost structure for simple group post
@@ -35,12 +37,15 @@ func RedditSubmissionToVkPost(
 
 // Post posts a new post on the wall of your public
 func (c *Client) Post(post *WallPost) error {
+	godotenv.Load()
+	copyright := os.Getenv("SOURCE")
 	params := vk.RequestParams{
 		"owner_id":     post.OwnerID,
 		"from_group":   post.FromGroup,
 		"message":      post.Message,
 		"attachments":  post.Attachment,
 		"publish_date": post.PublishDate,
+		"copyright":    copyright,
 	}
 
 	err := c.Client.CallMethod("wall.post", params, nil)
