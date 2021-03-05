@@ -3,7 +3,6 @@ package vk
 import (
 	"reddit-to-vk-auto-poster/src/services/reddit"
 	"strconv"
-	"time"
 
 	"github.com/go-vk-api/vk"
 )
@@ -14,7 +13,7 @@ type WallPost struct {
 	FromGroup   int
 	Message     string
 	Attachment  string
-	PublishDate int64
+	PublishDate int
 }
 
 // RedditSubmissionToVkPost convert reddit post struct to vk wallpost struct
@@ -23,7 +22,7 @@ func RedditSubmissionToVkPost(
 	client *Client,
 	fromGroup int,
 	attachment string,
-	publishDate int64) *WallPost {
+	publishDate int) *WallPost {
 	wallpost := WallPost{
 		OwnerID:     client.OwnerID,
 		FromGroup:   fromGroup,
@@ -96,7 +95,7 @@ func (c *Client) SaveWallPhoto(uploaded *PhotoUploadResult) (string, error) {
 }
 
 // PostRedditSubmission posts provided Post to VK
-func (c *Client) PostRedditSubmission(post *reddit.Post) error {
+func (c *Client) PostRedditSubmission(post *reddit.Post, time int) error {
 	if post.HasImage {
 		server, err := c.GetWallUploadServer()
 		if err != nil {
@@ -113,7 +112,7 @@ func (c *Client) PostRedditSubmission(post *reddit.Post) error {
 			return err
 		}
 
-		vkPost := RedditSubmissionToVkPost(post, c, 1, attachment, time.Now().Unix()+100)
+		vkPost := RedditSubmissionToVkPost(post, c, 1, attachment, time)
 		c.Post(vkPost)
 
 		reddit.DeletePostPhoto(post)

@@ -1,20 +1,18 @@
 package main
 
-import (
-	"fmt"
-	"reddit-to-vk-auto-poster/src/services/reddit"
-	"reddit-to-vk-auto-poster/src/services/vk"
-)
+import "reddit-to-vk-auto-poster/src/services/script"
 
 func main() {
-	redditclient := reddit.Initialize()
-	posts, _ := redditclient.GetPosts()
-
-	post := posts[3]
-
-	vkclient, _ := vk.Initialize()
-	err := vkclient.PostRedditSubmission(post)
-	if err != nil {
-		fmt.Print(err.Error())
-	}
+	// godotenv.Load()
+	// redditclient := reddit.Initialize()
+	// posts, _ := redditclient.GetPosts()
+	// now := time.Now().Unix() + 60
+	// vkclient, _ := vk.Initialize()
+	// for index, post := range posts {
+	// 	err := vkclient.PostRedditSubmission(post, now+int64(index*3600))
+	// 	if err != nil {
+	// 		fmt.Print(err.Error())
+	// 	}
+	// }
+	script.Exec()
 }
