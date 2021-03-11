@@ -5,7 +5,7 @@
 * VK API documentation: https://vk.com/dev/methods
 
 ## Getting tokens and other stuff
-Make your new app here https://www.reddit.com/prefs/apps and save its secret key
+Make your new app here https://www.reddit.com/prefs/apps and save its secret key and user agent (app's title)
 
 Generate VK ADMIN token from here: https://vkhost.github.io/
 
