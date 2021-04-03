@@ -21,7 +21,9 @@ func Exec() {
 	freq := int(float64(24) / float64(osFreq))
 	post(redditclient, vkclient, freq)
 	for range ticker.C {
-		post(redditclient, vkclient, freq)
+		go func() {
+			post(redditclient, vkclient, freq)
+		}()
 	}
 }
 
