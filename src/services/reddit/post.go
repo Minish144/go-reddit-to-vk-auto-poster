@@ -19,7 +19,9 @@ type Post struct {
 func SubmissiontToPost(submission *geddit.Submission) *Post {
 	imageURL := ""
 	hasImage := false
-	if strings.Contains(submission.URL, ".jpg") {
+	if strings.Contains(submission.URL, ".jpg") ||
+		strings.Contains(submission.URL, ".jpeg") ||
+		strings.Contains(submission.URL, ".png") {
 		imageURL = submission.URL
 		hasImage = true
 	} else {
