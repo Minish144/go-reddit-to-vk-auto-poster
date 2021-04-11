@@ -16,6 +16,7 @@ type WallPost struct {
 	Message     string
 	Attachment  string
 	PublishDate int
+	Source      string
 }
 
 // RedditSubmissionToVkPost convert reddit post struct to vk wallpost struct
@@ -31,6 +32,7 @@ func RedditSubmissionToVkPost(
 		Message:     post.Title,
 		Attachment:  attachment,
 		PublishDate: publishDate,
+		Source:      post.Source,
 	}
 	return &wallpost
 }
@@ -38,7 +40,13 @@ func RedditSubmissionToVkPost(
 // Post posts a new post on the wall of your public
 func (c *Client) Post(post *WallPost) error {
 	godotenv.Load()
-	copyright := os.Getenv("SOURCE")
+
+	var copyright string
+	if copyright != "" {
+		copyright = os.Getenv("SOURCE")
+	} else {
+		copyright = post.Source
+	}
 	params := vk.RequestParams{
 		"owner_id":     post.OwnerID,
 		"from_group":   post.FromGroup,

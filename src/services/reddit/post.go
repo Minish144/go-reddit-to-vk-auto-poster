@@ -1,6 +1,7 @@
 package reddit
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -13,6 +14,7 @@ type Post struct {
 	ImageURL  string
 	ImagePath string
 	HasImage  bool
+	Source    string
 }
 
 // SubmissiontToPost converts geddit.Submission to Post structure
@@ -25,10 +27,12 @@ func SubmissiontToPost(submission *geddit.Submission) *Post {
 	} else {
 		hasImage = false
 	}
+
 	return &Post{
 		Title:    submission.Title,
 		ImageURL: imageURL,
 		HasImage: hasImage,
+		Source:   "https://reddit.com" + submission.Permalink,
 	}
 }
 
@@ -36,6 +40,7 @@ func SubmissiontToPost(submission *geddit.Submission) *Post {
 func SubmissionsToPosts(submissions []*geddit.Submission) []*Post {
 	postsArray := []*Post{}
 	for _, subm := range submissions {
+		fmt.Println(subm.Permalink, subm.LinkFlairText)
 		postsArray = append(postsArray, SubmissiontToPost(subm))
 	}
 	return postsArray
