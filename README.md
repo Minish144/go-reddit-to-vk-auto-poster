@@ -29,6 +29,7 @@ LIMIT=<amount of pictures to download from subreddit>
 2. `$ cd go-reddit-to-vk-auto-poster`
 3. `$ touch .env` then open it, for example, with nano `$ nano .env` and fill it with data according to template above
 4. Install golang (read https://golang.org/dl)
+5. Make temp folder in a root dir `mkdir temp`
 5. `$ go build src/main.go -o app`
 6. `$ ./app`
 
